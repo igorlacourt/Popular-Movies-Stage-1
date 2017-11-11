@@ -1,0 +1,106 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout
+    xmlns:android="http://schemas.android.com/apk/res/android" android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:orientation="horizontal">
+
+    <RelativeLayout
+        android:id="@+id/left_layout"
+        android:layout_width="wrap_content"
+        android:layout_height="match_parent"
+        android:background="#000">
+
+        <ImageView
+            android:id="@+id/detail_poster"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:background="#000"
+            android:layout_alignParentTop="true"
+            android:layout_centerHorizontal="true"
+            android:onClick="onShowFullScreenPoster"
+            />
+        <ProgressBar
+            android:id="@+id/poster_loading"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_centerInParent="true"/>
+    </RelativeLayout>
+
+    <ScrollView
+        android:layout_width="wrap_content"
+        android:layout_height="match_parent"
+        android:layout_alignParentTop="true"
+        android:layout_toEndOf="@+id/left_layout"
+        android:layout_toRightOf="@+id/left_layout"
+        android:background="#000">
+
+        <RelativeLayout
+            android:layout_width="wrap_content"
+            android:layout_height="match_parent"
+            android:layout_alignParentBottom="true"
+            android:layout_alignParentTop="true"
+            android:layout_toEndOf="@+id/left_layout"
+            android:layout_toRightOf="@+id/left_layout"
+            android:background="#000">
+
+            <TextView
+                android:id="@+id/original_title"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_alignParentLeft="true"
+                android:layout_margin="10dp"
+                android:background="#000"
+                android:text="Thor: The Title Of This Movie"
+                android:textColor="@color/fontColor"
+                android:textSize="20sp"
+                android:textStyle="bold" />
+
+            <LinearLayout
+                android:id="@+id/release_date_layout"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_alignParentLeft="true"
+                android:layout_alignParentStart="true"
+                android:layout_below="@+id/original_title"
+                android:layout_marginLeft="10dp"
+                android:background="#000"
+                android:orientation="vertical">
+
+                <TextView
+                    android:id="@+id/vote_average"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:background="#000"
+                    android:text="34 votes"
+                    android:textSize="@dimen/releaseDateFontSize"
+                    android:textColor="@color/releaseDateColor"
+                    android:textStyle="bold" />
+
+                <TextView
+                    android:id="@+id/release_date"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:background="#000"
+                    android:text="11-02-2017"
+                    android:textSize="@dimen/releaseDateFontSize"
+                    android:textColor="@color/releaseDateColor" />
+            </LinearLayout>
+
+            <TextView
+                android:id="@+id/overview"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_alignParentBottom="true"
+                android:layout_below="@+id/release_date_layout"
+                android:layout_marginBottom="10dp"
+                android:layout_marginLeft="10dp"
+                android:layout_marginRight="10dp"
+                android:background="#000"
+                android:text="aoufofhodijf OIWHFO ajsfslkdgkjs JANFSLGKNS AOSKDJGLSDKJ aljkngofdkj scjvnksdjv aof´pweoif pwqeokfwok oejrogeijg owierjgfwbva anbrv"
+                android:textColor="@color/fontColor"
+                android:textSize="16sp" />
+        </RelativeLayout>
+    </ScrollView>
+
+
+</RelativeLayout>
