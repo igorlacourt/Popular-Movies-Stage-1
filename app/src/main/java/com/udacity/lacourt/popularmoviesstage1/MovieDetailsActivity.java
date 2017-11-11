@@ -1,41 +1,29 @@
 package com.udacity.lacourt.popularmoviesstage1;
 
 import android.content.Intent;
+import android.databinding.DataBindingUtil;
 import android.os.Bundle;
 import android.support.v7.app.AppCompatActivity;
 import android.util.Log;
 import android.view.View;
-import android.widget.ImageView;
-import android.widget.ProgressBar;
-import android.widget.TextView;
 
 import com.squareup.picasso.Callback;
 import com.squareup.picasso.Picasso;
+import com.udacity.lacourt.popularmoviesstage1.databinding.ActivityMovieDetailsBinding;
 
 public class MovieDetailsActivity extends AppCompatActivity {
 
-    ImageView poster;
-    TextView title;
-    TextView overview;
-    TextView voteAverage;
-    TextView releaseDate;
-    ProgressBar posterLoading;
-
     String sPosterPath;
 
+    private ActivityMovieDetailsBinding bind;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_movie_details);
+        bind = DataBindingUtil.setContentView(this, R.layout.activity_movie_details);
 
-        poster = (ImageView) findViewById(R.id.detail_poster);
-        title = (TextView) findViewById(R.id.original_title);
-        overview = (TextView) findViewById(R.id.overview);
-        voteAverage = (TextView)findViewById(R.id.vote_average);
-        releaseDate = (TextView) findViewById(R.id.release_date);
-        posterLoading = (ProgressBar) findViewById(R.id.poster_loading);
-        posterLoading.setVisibility(View.VISIBLE);
+        bind.posterLoading.setVisibility(View.VISIBLE);
 
         sPosterPath = getIntent().getStringExtra("poster");
         String sOriginalTitle = getIntent().getStringExtra("original_title");
@@ -45,10 +33,10 @@ public class MovieDetailsActivity extends AppCompatActivity {
 
 
         Picasso.with(this).load(sPosterPath)
-                .into(poster, new Callback() {
+                .into(bind.detailPoster, new Callback() {
                     @Override
                     public void onSuccess() {
-                     posterLoading.setVisibility(View.INVISIBLE);
+                     bind.posterLoading.setVisibility(View.INVISIBLE);
                     }
 
                     @Override
@@ -58,10 +46,10 @@ public class MovieDetailsActivity extends AppCompatActivity {
                 });
 
 
-        title.setText(sOriginalTitle);
-        overview.setText("   " + sOverview);
+        bind.originalTitle.setText(sOriginalTitle);
+        bind.overview.setText("   " + sOverview);
         setVoteAvarage(dVoteAverage);
-        releaseDate.setText("Release date: " + sReleaseDate);
+        bind.releaseDate.setText("Release date: " + sReleaseDate);
 
 
     }
@@ -69,8 +57,8 @@ public class MovieDetailsActivity extends AppCompatActivity {
     public void setVoteAvarage(Double voteAvarage) {
 
         if(voteAvarage == 0.0001) {
-            voteAverage.setTextColor(getResources().getColor(R.color.releaseDateColor));
-            voteAverage.setText("Missing vote avarage.");
+            bind.voteAverage.setTextColor(getResources().getColor(R.color.releaseDateColor));
+            bind.voteAverage.setText("Missing vote avarage.");
             return;
         }
 
@@ -95,8 +83,8 @@ public class MovieDetailsActivity extends AppCompatActivity {
                 break;
         }
 
-        voteAverage.setTextColor(getResources().getColor(color));
-        voteAverage.setText("Vote avarage: " + String.valueOf(voteAvarage));
+        bind.voteAverage.setTextColor(getResources().getColor(color));
+        bind.voteAverage.setText("Vote avarage: " + String.valueOf(voteAvarage));
     }
 
     public void onShowFullScreenPoster (View view) {

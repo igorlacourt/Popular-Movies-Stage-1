@@ -2,21 +2,19 @@ package com.udacity.lacourt.popularmoviesstage1;
 
 import android.content.Intent;
 import android.content.res.Configuration;
+import android.databinding.DataBindingUtil;
 import android.os.Bundle;
 import android.support.annotation.NonNull;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.GridLayoutManager;
-import android.support.v7.widget.RecyclerView;
 import android.util.Log;
 import android.view.Menu;
 import android.view.MenuInflater;
 import android.view.MenuItem;
 import android.view.View;
-import android.widget.Button;
-import android.widget.ProgressBar;
-import android.widget.RelativeLayout;
-import android.widget.TextView;
 import android.widget.Toast;
+
+import com.udacity.lacourt.popularmoviesstage1.databinding.ActivityMainBinding;
 
 import java.net.SocketTimeoutException;
 import java.util.concurrent.TimeUnit;
@@ -32,16 +30,9 @@ import retrofit2.converter.gson.GsonConverterFactory;
 public class MainActivity extends AppCompatActivity implements MovieAdapter.MovieOnClickHandler {
 
     private static final String BASE_URL = "https://api.themoviedb.org/3/";
-    private ProgressBar mProgressBar;
-    private ProgressBar mNewItemsProgressBar;
-
-    private TextView mErrorMessage;
-    private RelativeLayout mErrorLayout;
-    private Button mRetryButton;
 
     private Retrofit mRetrofit;
 
-    private RecyclerView mRecyclerView;
     private MovieAdapter mAdapter;
     private GridLayoutManager layoutManager;
 
@@ -54,43 +45,30 @@ public class MainActivity extends AppCompatActivity implements MovieAdapter.Movi
     private Preferences mPreferences;
     private Toast mToast;
 
+    private ActivityMainBinding bind;
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        setContentView(R.layout.activity_main);
+        bind = DataBindingUtil.setContentView(this, R.layout.activity_main);
 
         mToast = new Toast(this);
         mPreferences = new Preferences(this);
 
-        mNewItemsProgressBar = (ProgressBar)findViewById(R.id.new_items_progress_bar);
-        mNewItemsProgressBar.setVisibility(View.INVISIBLE);
-
-        mProgressBar = (ProgressBar) findViewById(R.id.progress_bar);
-        mProgressBar.setVisibility(View.VISIBLE);
-
-        mErrorMessage = (TextView) findViewById(R.id.error_message);
-//        mErrorMessage.setVisibility(View.INVISIBLE);
-
-        mRetryButton = (Button) findViewById(R.id.btn_retry);
-//        mRetryButton.setVisibility(View.INVISIBLE);
-
-        mErrorLayout = (RelativeLayout)findViewById(R.id.error_layout);
-        mErrorLayout.setVisibility(View.INVISIBLE);
+        bind.newItemsProgressBar.setVisibility(View.INVISIBLE);
+        bind.progressBar.setVisibility(View.VISIBLE);
+        bind.errorLayout.setVisibility(View.INVISIBLE);
 
         mRetrofit = null;
 
-        mRecyclerView = (RecyclerView) findViewById(R.id.recycler_view);
-
-
         setGridLayoutManager();
 
-        mRecyclerView.setLayoutManager(layoutManager);
-        mRecyclerView.setHasFixedSize(true);
+        bind.recyclerView.setLayoutManager(layoutManager);
+        bind.recyclerView.setHasFixedSize(true);
 
         mAdapter = new MovieAdapter(this, this);
 
-        mRecyclerView.setAdapter(mAdapter);
-
+        bind.recyclerView.setAdapter(mAdapter);
 
         loadDataOnScreen();
 
@@ -102,15 +80,14 @@ public class MainActivity extends AppCompatActivity implements MovieAdapter.Movi
 
             setRetrofit();
 
-            mRecyclerView.addOnScrollListener(createInfiniteScrollListener());
-
+            bind.recyclerView.addOnScrollListener(createInfiniteScrollListener());
             fetchDataFromAPI(page);
 
         } else {
-            mErrorMessage.setText("Check your internet connection and try again.");
-            mErrorMessage.setVisibility(View.VISIBLE);
-            mRetryButton.setVisibility(View.VISIBLE);
-            mErrorLayout.setVisibility(View.VISIBLE);
+            bind.errorMessage.setText("Check your internet connection and try again.");
+            bind.errorMessage.setVisibility(View.VISIBLE);
+            bind.btnRetry.setVisibility(View.VISIBLE);
+            bind.errorLayout.setVisibility(View.VISIBLE);
         }
     }
 
@@ -131,14 +108,14 @@ public class MainActivity extends AppCompatActivity implements MovieAdapter.Movi
             @Override public void onScrolledToEnd(final int firstVisibleItemPosition) {
 
 
-                if(!mProgressBar.isShown())mNewItemsProgressBar.setVisibility(View.VISIBLE);
+                if(!bind.progressBar.isShown()) bind.newItemsProgressBar.setVisibility(View.VISIBLE);
 
                 if(AppStatus.getInstance(getApplicationContext()).isOnline()) {
                     page++;
                     fetchDataFromAPI(page);
 
                 } else {
-                    mNewItemsProgressBar.setVisibility(View.INVISIBLE);
+                    bind.newItemsProgressBar.setVisibility(View.INVISIBLE);
                     if(mToast != null) mToast.cancel();
                     mToast = Toast.makeText(getApplicationContext(), getString(R.string.no_internet), Toast.LENGTH_SHORT);
                     mToast.show();
@@ -190,8 +167,8 @@ public class MainActivity extends AppCompatActivity implements MovieAdapter.Movi
                 if (response.isSuccessful()) {
 
                     mAdapter.setData(response.body().getResults());
-                    mProgressBar.setVisibility(View.INVISIBLE);
-                    mNewItemsProgressBar.setVisibility(View.INVISIBLE);
+                    bind.progressBar.setVisibility(View.INVISIBLE);
+                    bind.newItemsProgressBar.setVisibility(View.INVISIBLE);
 
                 } else {
                     Log.d("TAAG", "response code: " + response.code());
@@ -218,9 +195,9 @@ public class MainActivity extends AppCompatActivity implements MovieAdapter.Movi
         //Checks poor connection
         if(t instanceof SocketTimeoutException){
 
-            mProgressBar.setVisibility(View.INVISIBLE);
-            mErrorLayout.setVisibility(View.VISIBLE);
-            mErrorMessage.setText(getString(R.string.poor_connection));
+            bind.progressBar.setVisibility(View.INVISIBLE);
+            bind.errorLayout.setVisibility(View.VISIBLE);
+            bind.errorMessage.setText(getString(R.string.poor_connection));
         }
     }
 

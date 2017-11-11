@@ -1,6 +1,8 @@
 package com.udacity.lacourt.popularmoviesstage1;
 
+import android.app.Activity;
 import android.content.Context;
+import android.databinding.DataBindingUtil;
 import android.support.v7.widget.RecyclerView;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -10,6 +12,7 @@ import android.widget.RelativeLayout;
 
 import com.squareup.picasso.Callback;
 import com.squareup.picasso.Picasso;
+import com.udacity.lacourt.popularmoviesstage1.databinding.MovieLayoutBinding;
 
 import java.util.List;
 
@@ -25,10 +28,14 @@ public class MovieAdapter extends RecyclerView.Adapter<MovieAdapter.MovieViewHol
 
     MovieOnClickHandler movieOnClickHandler;
 
-    View mView;
+    LayoutInflater inflater;
+
+    Activity activity;
 
     public MovieAdapter(MovieOnClickHandler movieOnClickHandler, Context context) {
+
         this.mContext = context;
+        this.activity = (Activity) context;
         this.movieOnClickHandler = movieOnClickHandler;
     }
 
@@ -49,7 +56,7 @@ public class MovieAdapter extends RecyclerView.Adapter<MovieAdapter.MovieViewHol
     @Override
     public MovieAdapter.MovieViewHolder onCreateViewHolder(ViewGroup parent, int viewType) {
 
-        LayoutInflater inflater = LayoutInflater.from(parent.getContext());
+        inflater = LayoutInflater.from(parent.getContext());
         View view = inflater.inflate(R.layout.movie_layout, parent, false);
 
         return new MovieViewHolder(view);
@@ -91,11 +98,9 @@ public class MovieAdapter extends RecyclerView.Adapter<MovieAdapter.MovieViewHol
 
         RelativeLayout mMovieLayout;
         ImageView mImageView;
-//        ProgressBar mProgressBar;
 
         public MovieViewHolder(View itemView) {
             super(itemView);
-//            mProgressBar = (ProgressBar) itemView.findViewById(R.id.image_loading_progress_bar);
             mImageView = (ImageView) itemView.findViewById(R.id.poster);
             mMovieLayout = (RelativeLayout) itemView.findViewById(R.id.movie_layout);
             mMovieLayout.setVisibility(View.INVISIBLE);
