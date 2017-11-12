@@ -5,9 +5,14 @@ import android.net.ConnectivityManager;
 import android.net.NetworkInfo;
 import android.util.Log;
 
+/* THIS CLASS IS NOT MADE BY ME. I TOOK FROM SOME TUTORIAL ON INTERNET. JUST DON'T REMEMBER WHERE :\ .
+     I READ UDACITY'S WARNNING ABOUT THIRD PARTIES CODE JUST WHEN I WAS ABOUT TO SUBMIT THIS PROJECT
+*/
+
 public class AppStatus {
- 
+
     static Context context;
+
     /**
      * We use this class to determine if the application has been connected to either WIFI Or Mobile
      * Network, before we make any network request to the server.

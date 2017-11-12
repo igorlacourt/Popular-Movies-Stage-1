@@ -15,6 +15,10 @@
  */
 package com.udacity.lacourt.popularmoviesstage1.utils;
 
+/* THIS CLASS IS NOT MADE BY ME. I TOOK FROM SOME TUTORIAL ON INTERNET. JUST DON'T REMEMBER WHERE :\ .
+     I READ UDACITY'S WARNNING ABOUT THIRD PARTIES CODE JUST WHEN I WAS ABOUT TO SUBMIT THIS PROJECT
+*/
+
 public class Preconditions {
   public static void checkNotNull(Object object, String message) {
     if (object == null) {

@@ -19,6 +19,10 @@ package com.udacity.lacourt.popularmoviesstage1.utils;
 import android.support.v7.widget.GridLayoutManager;
 import android.support.v7.widget.RecyclerView;
 
+/* THIS CLASS IS NOT MADE BY ME. I TOOK FROM SOME TUTORIAL ON INTERNET. JUST DON'T REMEMBER WHERE :\ .
+     I READ UDACITY'S WARNNING ABOUT THIRD PARTIES CODE JUST WHEN I WAS ABOUT TO SUBMIT THIS PROJECT
+*/
+
 /**
  * InfiniteScrollListener, which can be added to RecyclerView with addOnScrollListener
  * to detect moment when RecyclerView was scrolled to the end.
