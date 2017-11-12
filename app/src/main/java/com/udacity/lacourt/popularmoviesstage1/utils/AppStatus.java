@@ -1,4 +1,4 @@
-package com.udacity.lacourt.popularmoviesstage1;
+package com.udacity.lacourt.popularmoviesstage1.utils;
 
 import android.content.Context;
 import android.net.ConnectivityManager;

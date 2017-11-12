@@ -1,5 +1,6 @@
 package com.udacity.lacourt.popularmoviesstage1;
 
+import android.content.Context;
 import android.content.Intent;
 import android.content.res.Configuration;
 import android.databinding.DataBindingUtil;
@@ -14,7 +15,12 @@ import android.view.MenuItem;
 import android.view.View;
 import android.widget.Toast;
 
+import com.udacity.lacourt.popularmoviesstage1.data.Preferences;
 import com.udacity.lacourt.popularmoviesstage1.databinding.ActivityMainBinding;
+import com.udacity.lacourt.popularmoviesstage1.model.PostResponse;
+import com.udacity.lacourt.popularmoviesstage1.model.Result;
+import com.udacity.lacourt.popularmoviesstage1.utils.AppStatus;
+import com.udacity.lacourt.popularmoviesstage1.utils.InfiniteScrollListener;
 
 import java.net.SocketTimeoutException;
 import java.util.concurrent.TimeUnit;
@@ -84,10 +90,7 @@ public class MainActivity extends AppCompatActivity implements MovieAdapter.Movi
             fetchDataFromAPI(page);
 
         } else {
-            bind.errorMessage.setText("Check your internet connection and try again.");
-            bind.errorMessage.setVisibility(View.VISIBLE);
-            bind.btnRetry.setVisibility(View.VISIBLE);
-            bind.errorLayout.setVisibility(View.VISIBLE);
+            showNoConnectionMessage();
         }
     }
 
@@ -180,7 +183,7 @@ public class MainActivity extends AppCompatActivity implements MovieAdapter.Movi
             @Override
             public void onFailure(Call<PostResponse> call, Throwable t) {
                 t.printStackTrace();
-                Log.d("TAAG", "Fail!" );
+                Log.d("TAAG", "onFailure!" );
 
                 t.printStackTrace();
 
@@ -195,10 +198,28 @@ public class MainActivity extends AppCompatActivity implements MovieAdapter.Movi
         //Checks poor connection
         if(t instanceof SocketTimeoutException){
 
-            bind.progressBar.setVisibility(View.INVISIBLE);
-            bind.errorLayout.setVisibility(View.VISIBLE);
-            bind.errorMessage.setText(getString(R.string.poor_connection));
+            if(mAdapter.movies == null){
+                showPoorConnectiorMessage();
+            }
+            else {
+                if(mToast != null) mToast.cancel();
+                mToast = Toast.makeText(getApplicationContext(), getString(R.string.poor_connection_toast), Toast.LENGTH_LONG);
+                mToast.show();
+            }
+
         }
+    }
+
+    private void showPoorConnectiorMessage() {
+        bind.progressBar.setVisibility(View.INVISIBLE);
+        bind.errorMessage.setText(getString(R.string.poor_connection));
+        bind.errorLayout.setVisibility(View.VISIBLE);
+
+    }
+
+    private void showNoConnectionMessage() {
+        bind.errorMessage.setText("Check your internet connection and try again.");
+        bind.errorLayout.setVisibility(View.VISIBLE);
     }
 
     @Override

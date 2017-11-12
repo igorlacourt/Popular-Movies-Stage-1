@@ -13,7 +13,7 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-package com.udacity.lacourt.popularmoviesstage1;
+package com.udacity.lacourt.popularmoviesstage1.utils;
 
 public class Preconditions {
   public static void checkNotNull(Object object, String message) {

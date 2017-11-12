@@ -1,8 +1,10 @@
-package com.udacity.lacourt.popularmoviesstage1;
+package com.udacity.lacourt.popularmoviesstage1.data;
 
 import android.app.Activity;
 import android.content.Context;
 import android.content.SharedPreferences;
+
+import com.udacity.lacourt.popularmoviesstage1.R;
 
 /**
  * Created by igor on 08/11/2017.

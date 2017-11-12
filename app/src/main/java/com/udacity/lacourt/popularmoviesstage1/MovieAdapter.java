@@ -2,7 +2,6 @@ package com.udacity.lacourt.popularmoviesstage1;
 
 import android.app.Activity;
 import android.content.Context;
-import android.databinding.DataBindingUtil;
 import android.support.v7.widget.RecyclerView;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -12,7 +11,7 @@ import android.widget.RelativeLayout;
 
 import com.squareup.picasso.Callback;
 import com.squareup.picasso.Picasso;
-import com.udacity.lacourt.popularmoviesstage1.databinding.MovieLayoutBinding;
+import com.udacity.lacourt.popularmoviesstage1.model.Result;
 
 import java.util.List;
 

@@ -1,4 +1,4 @@
-package com.udacity.lacourt.popularmoviesstage1;
+package com.udacity.lacourt.popularmoviesstage1.model;
 
 import com.google.gson.annotations.Expose;
 import com.google.gson.annotations.SerializedName;
