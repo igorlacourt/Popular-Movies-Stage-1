@@ -2,6 +2,10 @@ apply plugin: 'com.android.application'
 
 android {
 
+    defaultConfig {
+        buildConfigField("String", "API_KEY", API_KEY)
+    }
+
     dataBinding {
         enabled = true;
     }

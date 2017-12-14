@@ -8,6 +8,7 @@ import android.os.Bundle;
 import android.support.annotation.NonNull;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.GridLayoutManager;
+import android.util.DisplayMetrics;
 import android.util.Log;
 import android.view.Menu;
 import android.view.MenuInflater;
@@ -22,6 +23,8 @@ import com.udacity.lacourt.popularmoviesstage1.model.Result;
 import com.udacity.lacourt.popularmoviesstage1.utils.AppStatus;
 import com.udacity.lacourt.popularmoviesstage1.utils.InfiniteScrollListener;
 
+import java.math.BigDecimal;
+import java.math.RoundingMode;
 import java.net.SocketTimeoutException;
 import java.util.concurrent.TimeUnit;
 
@@ -99,8 +102,38 @@ public class MainActivity extends AppCompatActivity implements MovieAdapter.Movi
             layoutManager = new GridLayoutManager(this, 2);
 
         } else {
-            layoutManager = new GridLayoutManager(this, 4);
+            layoutManager = new GridLayoutManager(this, numberOfColumns2(185));
         }
+    }
+
+    private int numberOfColumns(int widthDivider) {
+        DisplayMetrics displayMetrics = new DisplayMetrics();
+        getWindowManager().getDefaultDisplay().getMetrics(displayMetrics);
+        // You can change this divider to adjust the size of the poster
+        int width = displayMetrics.widthPixels;
+        int nColumns = width / widthDivider;
+        if (nColumns < 2) return 2;
+        return nColumns;
+    }
+
+    private int numberOfColumns2(int imageWidth) {
+        DisplayMetrics displayMetrics = new DisplayMetrics();
+        getWindowManager().getDefaultDisplay().getMetrics(displayMetrics);
+        // You can change this divider to adjust the size of the poster
+        int screenWidth = displayMetrics.widthPixels;
+        double screenHeight = displayMetrics.heightPixels;
+
+        double imageHeight = (2 * imageWidth);
+
+        double percentage = screenHeight / imageHeight;
+
+        double width = percentage * imageWidth;
+
+        double nColumns = screenWidth / (int)width;
+        BigDecimal bdColums = new BigDecimal(nColumns).setScale(0, RoundingMode.HALF_EVEN);
+
+        if (bdColums.doubleValue() < 2) return 2;
+        return (int)bdColums.doubleValue();
     }
 
     @NonNull
