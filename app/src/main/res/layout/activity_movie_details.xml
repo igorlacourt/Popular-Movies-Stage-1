@@ -1,88 +1,123 @@
 <layout>
-    <RelativeLayout android:layout_width="match_parent"
+    <ScrollView
+        xmlns:android="http://schemas.android.com/apk/res/android"
+        android:layout_width="match_parent"
         android:layout_height="match_parent"
-        android:orientation="vertical"
-        android:background="#000"
-        android:weightSum="100"
-        xmlns:android="http://schemas.android.com/apk/res/android">
+        android:background="#000">
+
         <RelativeLayout
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:layout_above="@+id/original_title"
-            android:background="#000">
-            <ImageView
-                android:id="@+id/detail_poster"
+            android:orientation="vertical"
+            android:background="#000" >
+
+            <LinearLayout
+                android:id="@+id/general_info"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_alignParentTop="true"
+                android:gravity="top"
+                android:background="#000"
+                android:orientation="horizontal"
+                android:weightSum="100" >
+
+                <ImageView
+                    android:id="@+id/detail_poster"
+                    android:layout_width="0dp"
+                    android:layout_height="wrap_content"
+                    android:adjustViewBounds="true"
+                    android:layout_gravity="top"
+                    android:layout_weight="50"
+                    android:background="#000"
+                    android:onClick="onShowFullScreenPoster" />
+
+                <LinearLayout
+                    android:layout_width="0dp"
+                    android:layout_height="wrap_content"
+                    android:layout_gravity="top"
+                    android:layout_weight="50"
+                    android:orientation="vertical">
+
+                    <TextView
+                        android:id="@+id/original_title"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_margin="10dp"
+                        android:background="#000"
+                        android:text="Thor: The Title Of This Movie"
+                        android:textColor="#fcfcfc"
+                        android:textSize="20sp"
+                        android:textStyle="bold" />
+
+                    <TextView
+                        android:id="@+id/release_date"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:background="#000"
+                        android:text="11-02-2017"
+                        android:textColor="@color/releaseDateColor"
+                        android:textSize="@dimen/releaseDateFontSize"
+                        android:textStyle="bold"/>
+
+                    <TextView
+                        android:id="@+id/vote_average"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:background="#000"
+                        android:text="34 votes"
+                        android:textColor="@color/releaseDateColor"
+                        android:textSize="@dimen/releaseDateFontSize"
+                        android:textStyle="bold" />
+
+                    <Button
+                        android:id="@+id/add_favorite_button"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:text="Favorite"
+                        android:onClick="onAddToFavoritesSelected"/>
+
+                </LinearLayout>
+
+            </LinearLayout>
+
+            <TextView
+                android:id="@+id/overview"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_below="@+id/general_info"
+                android:background="#000"
+                android:textColor="@color/fontColor"
+                android:textSize="16sp"
+                android:text=""
+                android:layout_margin="10dp" />
+
+            <RelativeLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_below="@+id/overview" >
+
+                <Button
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="trailer"
+                    android:onClick="onTrailerSelected"/>
+
+                <ProgressBar
+                    android:id="@+id/trailer_progress_bar"
+                    android:layout_width="wrap_content"
+                    android:layout_height="match_parent" />
+
+            </RelativeLayout>
+
+            <ProgressBar
+                android:id="@+id/poster_loading"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:background="#000"
                 android:layout_alignParentTop="true"
                 android:layout_centerHorizontal="true"
-                android:onClick="onShowFullScreenPoster"
-                />
+                android:layout_marginTop="50dp" />
 
         </RelativeLayout>
+    </ScrollView>
 
-        <TextView
-            android:id="@+id/original_title"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_margin="10dp"
-            android:layout_above="@+id/release_date_layout"
-            android:textSize="20sp"
-            android:textStyle="bold"
-            android:text="Thor: The Title Of This Movie"
-            android:background="#000"
-            android:textColor="#fcfcfc"
-            />
-
-        <LinearLayout
-            android:id="@+id/release_date_layout"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:background="#000"
-            android:layout_marginLeft="10dp"
-            android:orientation="horizontal"
-            android:layout_above="@id/overview"
-            android:weightSum="10">
-            <TextView
-                android:id="@+id/vote_average"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:background="#000"
-                android:textColor="@color/releaseDateColor"
-                android:textSize="@dimen/releaseDateFontSize"
-                android:textStyle="bold"
-                android:text="34 votes"
-                android:layout_weight="5"/>
-            <TextView
-                android:id="@+id/release_date"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:background="#000"
-                android:textColor="@color/releaseDateColor"
-                android:textSize="@dimen/releaseDateFontSize"
-                android:text="11-02-2017"
-                android:layout_weight="5"/>
-        </LinearLayout>
-
-        <TextView
-            android:id="@+id/overview"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:background="#000"
-            android:textColor="@color/fontColor"
-            android:textSize="16sp"
-            android:layout_alignParentBottom="true"
-            android:text="aoufofhodijf OIWHFO ajsfslkdgkjs JANFSLGKNS AOSKDJGLSDKJ aljkngofdkj scjvnksdjv aof´pweoif pwqeokfwok oejrogeijg owierjgfwbva anbrv"
-            android:layout_margin="10dp"/>
-
-        <ProgressBar
-            android:id="@+id/poster_loading"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_alignParentTop="true"
-            android:layout_centerHorizontal="true"
-            android:layout_marginTop="50dp"/>
-
-    </RelativeLayout>
 </layout>

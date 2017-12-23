@@ -1,6 +1,5 @@
 package com.udacity.lacourt.popularmoviesstage1;
 
-import android.content.Context;
 import android.content.Intent;
 import android.content.res.Configuration;
 import android.databinding.DataBindingUtil;
@@ -16,12 +15,15 @@ import android.view.MenuItem;
 import android.view.View;
 import android.widget.Toast;
 
+import com.udacity.lacourt.popularmoviesstage1.data.FavoritesContract;
+import com.udacity.lacourt.popularmoviesstage1.data.FavoritesDbHelper;
 import com.udacity.lacourt.popularmoviesstage1.data.Preferences;
 import com.udacity.lacourt.popularmoviesstage1.databinding.ActivityMainBinding;
 import com.udacity.lacourt.popularmoviesstage1.model.PostResponse;
 import com.udacity.lacourt.popularmoviesstage1.model.Result;
 import com.udacity.lacourt.popularmoviesstage1.utils.AppStatus;
 import com.udacity.lacourt.popularmoviesstage1.utils.InfiniteScrollListener;
+import com.udacity.lacourt.popularmoviesstage1.utils.RetrofitClass;
 
 import java.math.BigDecimal;
 import java.math.RoundingMode;
@@ -38,16 +40,10 @@ import retrofit2.converter.gson.GsonConverterFactory;
 
 public class MainActivity extends AppCompatActivity implements MovieAdapter.MovieOnClickHandler {
 
-    private static final String BASE_URL = "https://api.themoviedb.org/3/";
-
-    private Retrofit mRetrofit;
-
     private MovieAdapter mAdapter;
     private GridLayoutManager layoutManager;
 
     private int page = 1;
-    private MoviesApiService client;
-    private Call<PostResponse> call;
 
     private final int PAGE_ITEMS = 20;
 
@@ -61,14 +57,15 @@ public class MainActivity extends AppCompatActivity implements MovieAdapter.Movi
         super.onCreate(savedInstanceState);
         bind = DataBindingUtil.setContentView(this, R.layout.activity_main);
 
+        //Database
+        FavoritesDbHelper.onInicializeDB(this);
+
         mToast = new Toast(this);
         mPreferences = new Preferences(this);
 
         bind.newItemsProgressBar.setVisibility(View.INVISIBLE);
         bind.progressBar.setVisibility(View.VISIBLE);
         bind.errorLayout.setVisibility(View.INVISIBLE);
-
-        mRetrofit = null;
 
         setGridLayoutManager();
 
@@ -83,11 +80,24 @@ public class MainActivity extends AppCompatActivity implements MovieAdapter.Movi
 
     }
 
+    @Override
+    protected void onStart() {
+        super.onStart();
+        //TODO make reclyview return from where it stoped after coming back from MovieDetailsActivity
+        page = 1;
+
+        mAdapter = new MovieAdapter(this, this);
+        bind.recyclerView.setAdapter(mAdapter);
+
+        loadDataOnScreen();
+    }
+
+
     private void loadDataOnScreen() {
 
         if(AppStatus.getInstance(this).isOnline()) {
 
-            setRetrofit();
+            RetrofitClass.setRetrofit();
 
             bind.recyclerView.addOnScrollListener(createInfiniteScrollListener());
             fetchDataFromAPI(page);
@@ -97,26 +107,18 @@ public class MainActivity extends AppCompatActivity implements MovieAdapter.Movi
         }
     }
 
+
+
     private void setGridLayoutManager() {
         if(this.getResources().getConfiguration().orientation == Configuration.ORIENTATION_PORTRAIT) {
             layoutManager = new GridLayoutManager(this, 2);
 
         } else {
-            layoutManager = new GridLayoutManager(this, numberOfColumns2(185));
+            layoutManager = new GridLayoutManager(this, numberOfColumns(185));
         }
     }
 
-    private int numberOfColumns(int widthDivider) {
-        DisplayMetrics displayMetrics = new DisplayMetrics();
-        getWindowManager().getDefaultDisplay().getMetrics(displayMetrics);
-        // You can change this divider to adjust the size of the poster
-        int width = displayMetrics.widthPixels;
-        int nColumns = width / widthDivider;
-        if (nColumns < 2) return 2;
-        return nColumns;
-    }
-
-    private int numberOfColumns2(int imageWidth) {
+    private int numberOfColumns(int imageWidth) {
         DisplayMetrics displayMetrics = new DisplayMetrics();
         getWindowManager().getDefaultDisplay().getMetrics(displayMetrics);
         // You can change this divider to adjust the size of the poster
@@ -139,16 +141,17 @@ public class MainActivity extends AppCompatActivity implements MovieAdapter.Movi
     @NonNull
     private InfiniteScrollListener createInfiniteScrollListener() {
 
-
         return new InfiniteScrollListener(PAGE_ITEMS, layoutManager) {
             @Override public void onScrolledToEnd(final int firstVisibleItemPosition) {
 
 
-                if(!bind.progressBar.isShown()) bind.newItemsProgressBar.setVisibility(View.VISIBLE);
 
                 if(AppStatus.getInstance(getApplicationContext()).isOnline()) {
                     page++;
-                    fetchDataFromAPI(page);
+                    if(mPreferences.isMostPopular() || mPreferences.isTopRated()){
+                        if(!bind.progressBar.isShown()) bind.newItemsProgressBar.setVisibility(View.VISIBLE);
+                        fetchDataFromAPI(page);
+                    }
 
                 } else {
                     bind.newItemsProgressBar.setVisibility(View.INVISIBLE);
@@ -161,41 +164,30 @@ public class MainActivity extends AppCompatActivity implements MovieAdapter.Movi
 
     }
 
-    public void setRetrofit() {
-        final OkHttpClient okHttpClient = new OkHttpClient.Builder()
-                .readTimeout(1, TimeUnit.SECONDS)
-                .writeTimeout(1, TimeUnit.SECONDS)
-                .connectTimeout(1, TimeUnit.SECONDS)
-                .build();
-
-        mRetrofit = new Retrofit.Builder()
-                .baseUrl(BASE_URL)
-                .addConverterFactory(GsonConverterFactory.create())
-                .client(okHttpClient)
-                .build();
-
-        //Retrofit Client
-        client = mRetrofit.create(MoviesApiService.class);
-
-    }
-
     public void fetchDataFromAPI(int page) {
 
         if(mPreferences.isMostPopular()){
 
-            call = client.getMostPopular(String.valueOf(page));
-            getResusltFromAPI();
+            RetrofitClass.requestMostPopular(page);
+            getResultFromAPI();
+
+        } else if(mPreferences.isTopRated()) {
+
+            RetrofitClass.requestTopRated(page);
+            getResultFromAPI();
 
         } else {
 
-            call = client.getTopRated(String.valueOf(page));
-            getResusltFromAPI();
+            mAdapter.setData(FavoritesDbHelper.populateFavoritesList());
+            bind.progressBar.setVisibility(View.INVISIBLE);
+            bind.newItemsProgressBar.setVisibility(View.INVISIBLE);
+
         }
     }
 
-    public void getResusltFromAPI() {
+    public void getResultFromAPI() {
         //Display data
-        call.enqueue(new Callback<PostResponse>() {
+        RetrofitClass.call.enqueue(new Callback<PostResponse>() {
 
             @Override
             public void onResponse(Call<PostResponse> call, Response<PostResponse> response) {
@@ -211,8 +203,6 @@ public class MainActivity extends AppCompatActivity implements MovieAdapter.Movi
                 }
             }
 
-
-
             @Override
             public void onFailure(Call<PostResponse> call, Throwable t) {
                 t.printStackTrace();
@@ -221,7 +211,6 @@ public class MainActivity extends AppCompatActivity implements MovieAdapter.Movi
                 t.printStackTrace();
 
                 checkPoorConnection(t);
-
 
             }
         });
@@ -257,13 +246,9 @@ public class MainActivity extends AppCompatActivity implements MovieAdapter.Movi
 
     @Override
     public void onClick(Result result) {
-        Intent intent = new Intent(this, MovieDetailsActivity.class);
-        intent.putExtra("original_title", result.getOriginalTitle());
-        intent.putExtra("poster", "http://image.tmdb.org/t/p/w780" + result.getPosterPath());
-        intent.putExtra("overview", result.getOverview());
-        intent.putExtra("vote_average", result.getVoteAverage());
-        intent.putExtra("release_date", result.getReleaseDate());
-        startActivity(intent);
+        Intent movieIntent = new Intent(this, MovieDetailsActivity.class);
+        movieIntent.putExtra("movie", result);
+        startActivity(movieIntent);
     }
 
     @Override
@@ -281,23 +266,30 @@ public class MainActivity extends AppCompatActivity implements MovieAdapter.Movi
 
         if (id == R.id.sort_pop) {
 
-            loadMostpopular(true);
+            loadMostpopular(true, false);
 
         }
 
         if (id == R.id.sort_rated) {
 
-            loadMostpopular(false);
+            loadMostpopular(false, true);
+
+        }
+
+        if (id == R.id.favorites) {
+
+            loadMostpopular(false, false);
 
         }
 
         return super.onOptionsItemSelected(item);
     }
 
-    private void loadMostpopular(boolean isMostPopular){
+    private void loadMostpopular(boolean isMostPopular, boolean isTopRated){
         if(AppStatus.getInstance(getApplication()).isOnline()) {
 
             mPreferences.setMostPopular(isMostPopular);
+            mPreferences.setTopRated(isTopRated);
 
             if(mAdapter.movies != null) {
                 mAdapter.movies.clear();

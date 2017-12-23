@@ -2,13 +2,15 @@
     <string name="app_name">Poupular Movies Stage 1</string>
     <string name="sort_pop">Order by most popular</string>
     <string name="sort_rated">Order by top rated</string>
+    <string name="favorites">Favorites List</string>
     <string name="select_sort_menu_bar_label">Select the sort order</string>
     <string name="no_internet">No internet connection!</string>
     <string name="poor_connection">Poor internet connection. Please, try again.</string>
 
 
     //Preferences
-    <string name="is_most_popular_key">ismostpopular</string>
+    <string name="is_most_popular">ismostpopular</string>
+    <string name="is_top_rated">istoprated</string>
     <string name="retry_button">Retry</string>
     <string name="poor_connection_toast">Poor internet connection!</string>
     <bool name="in_most_popular_default">true</bool>

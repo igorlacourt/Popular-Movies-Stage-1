@@ -1,9 +1,11 @@
 package com.udacity.lacourt.popularmoviesstage1;
 
 import com.udacity.lacourt.popularmoviesstage1.model.PostResponse;
+import com.udacity.lacourt.popularmoviesstage1.model.TrailersPostResponse;
 
 import retrofit2.Call;
 import retrofit2.http.GET;
+import retrofit2.http.Path;
 import retrofit2.http.Query;
 
 public interface MoviesApiService {
@@ -20,4 +22,7 @@ public interface MoviesApiService {
 
     @GET("movie/top_rated?api_key=fef98cf6bd829f53836bb7d92b02d6ef&language=en-US")
     Call<PostResponse> getTopRated(@Query("page") String page);
+
+    @GET("movie/{id}/videos?api_key=" + API_KEY)
+    Call<TrailersPostResponse> getTrailer(@Path("id") String user);
 }

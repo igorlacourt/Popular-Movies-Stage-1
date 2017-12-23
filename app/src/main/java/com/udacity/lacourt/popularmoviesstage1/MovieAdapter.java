@@ -67,6 +67,9 @@ public class MovieAdapter extends RecyclerView.Adapter<MovieAdapter.MovieViewHol
     public void onBindViewHolder(final MovieAdapter.MovieViewHolder holder, final int position){
 
         Picasso.with(mContext).load("http://image.tmdb.org/t/p/w185" + movies.get(position).getPosterPath())
+                /*Should use .placeholder() and .error() in case of picasso encounter a null or empty value!
+                .placeholder(R.drawable.user_placeholder)
+                .error(R.drawable.user_placeholder_error) */
                 .into(holder.mImageView, new Callback() {
                      @Override
                     public void onSuccess() {
@@ -82,7 +85,7 @@ public class MovieAdapter extends RecyclerView.Adapter<MovieAdapter.MovieViewHol
         holder.mImageView.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                movieOnClickHandler.onClick(movies.get(position));
+                    movieOnClickHandler.onClick(movies.get(position));
             }
         });
     }
