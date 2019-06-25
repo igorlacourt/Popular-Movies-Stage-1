@@ -24,12 +24,16 @@
 
         <activity
             android:name=".MovieDetailsActivity"
-            android:theme="@style/AppTheme.NoActionBar"/>
+            android:theme="@style/Theme.AppCompat.DayNight.DarkActionBar"/>
 
         <activity
             android:name=".FullScreenPosterActivity"
             android:theme="@style/AppTheme.NoActionBar" />
 
+        <provider
+            android:name="com.udacity.lacourt.popularmoviesstage1.data.FavoritesContentProvider"
+            android:authorities="com.udacity.lacourt.popularmoviesstage1"
+            android:exported="false"/>
 
     </application>
 </manifest>

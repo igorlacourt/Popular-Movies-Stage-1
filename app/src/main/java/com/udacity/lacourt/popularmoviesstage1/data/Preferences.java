@@ -6,15 +6,11 @@ import android.content.SharedPreferences;
 
 import com.udacity.lacourt.popularmoviesstage1.R;
 
-/**
- * Created by igor on 08/11/2017.
- */
-
 public class Preferences {
 
-    SharedPreferences sharedPref;
-    SharedPreferences.Editor editor;
-    Activity mActivity;
+    private final SharedPreferences sharedPref;
+    private final SharedPreferences.Editor editor;
+    private final Activity mActivity;
 
     public Preferences(Activity activity) {
         this.mActivity = activity;

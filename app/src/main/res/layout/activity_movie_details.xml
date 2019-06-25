@@ -1,15 +1,16 @@
-<layout>
+<layout xmlns:app="http://schemas.android.com/apk/res-auto">
     <ScrollView
         xmlns:android="http://schemas.android.com/apk/res/android"
+        android:id="@+id/details_scroll_view"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
-        android:background="#000">
-
+        android:background="@color/background" >
+        
         <RelativeLayout
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:orientation="vertical"
-            android:background="#000" >
+            android:background="@color/background" >
 
             <LinearLayout
                 android:id="@+id/general_info"
@@ -17,7 +18,7 @@
                 android:layout_height="wrap_content"
                 android:layout_alignParentTop="true"
                 android:gravity="top"
-                android:background="#000"
+                android:background="@color/background"
                 android:orientation="horizontal"
                 android:weightSum="100" >
 
@@ -33,47 +34,64 @@
 
                 <LinearLayout
                     android:layout_width="0dp"
-                    android:layout_height="wrap_content"
+                    android:layout_height="match_parent"
                     android:layout_gravity="top"
                     android:layout_weight="50"
-                    android:orientation="vertical">
-
-                    <TextView
-                        android:id="@+id/original_title"
-                        android:layout_width="wrap_content"
-                        android:layout_height="wrap_content"
-                        android:layout_margin="10dp"
-                        android:background="#000"
-                        android:text="Thor: The Title Of This Movie"
-                        android:textColor="#fcfcfc"
-                        android:textSize="20sp"
-                        android:textStyle="bold" />
+                    android:weightSum="100"
+                    android:orientation="vertical"
+                    android:padding="@dimen/topInfoPadding">
 
                     <TextView
                         android:id="@+id/release_date"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
-                        android:background="#000"
-                        android:text="11-02-2017"
-                        android:textColor="@color/releaseDateColor"
-                        android:textSize="@dimen/releaseDateFontSize"
-                        android:textStyle="bold"/>
+                        android:layout_weight="33"
+                        android:layout_gravity="center"
+                        android:gravity="center"
+                        android:background="@color/background"
+                        android:textColor="@color/darkerText"
+                        android:textSize="@dimen/releaseDate"
+                        android:textStyle="italic" />
+
+                    <TextView
+                        android:id="@+id/vote_average_head"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_gravity="center"
+                        android:gravity="center"
+                        android:textStyle="bold"
+                        android:textSize="@dimen/voteAvarageHead"/>
 
                     <TextView
                         android:id="@+id/vote_average"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
-                        android:background="#000"
-                        android:text="34 votes"
+                        android:layout_weight="33"
+                        android:layout_gravity="center"
+                        android:gravity="center"
+                        android:background="@color/background"
                         android:textColor="@color/releaseDateColor"
-                        android:textSize="@dimen/releaseDateFontSize"
+                        android:textSize="@dimen/voteAvarage"
                         android:textStyle="bold" />
 
-                    <Button
+                    <TextView
+                        android:id="@+id/favorite_head"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_gravity="center"
+                        android:text="@string/favorite_head"
+                        android:textColor="@color/favorite"
+                        android:textStyle="italic"
+                        android:gravity="center"
+                        android:textSize="@dimen/voteAvarageHead"/>
+
+                    <ImageView
                         android:id="@+id/add_favorite_button"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
-                        android:text="Favorite"
+                        android:layout_weight="33"
+                        android:layout_gravity="center"
+                        android:gravity="center"
                         android:onClick="onAddToFavoritesSelected"/>
 
                 </LinearLayout>
@@ -85,27 +103,70 @@
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:layout_below="@+id/general_info"
-                android:background="#000"
-                android:textColor="@color/fontColor"
-                android:textSize="16sp"
-                android:text=""
-                android:layout_margin="10dp" />
+                android:background="@color/background"
+                android:textColor="@color/defaultFontColor"
+                android:textSize="@dimen/defaultText"
+                android:layout_margin="@dimen/contentMargin" />
 
             <RelativeLayout
                 android:layout_width="match_parent"
-                android:layout_height="wrap_content"
+                android:layout_height="match_parent"
                 android:layout_below="@+id/overview" >
 
-                <Button
-                    android:layout_width="wrap_content"
+                <TextView
+                    android:id="@+id/videos_head"
+                    android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    android:text="trailer"
-                    android:onClick="onTrailerSelected"/>
+                    android:layout_gravity="start"
+                    android:text="@string/videos_head"
+                    android:textSize="@dimen/defaultText"
+                    android:textStyle="bold"
+                    android:textColor="@color/defaultFontColor"
+                    android:layout_margin="@dimen/headMargin"/>
+
+                <ListView
+                    xmlns:android="http://schemas.android.com/apk/res/android"
+                    android:id="@+id/trailers_list"
+                    android:layout_width="match_parent"
+                    android:layout_height="match_parent"
+                    android:layout_below="@+id/videos_head"
+                    android:divider="@color/darkerLine"
+                    android:dividerHeight="@dimen/divider"/>
 
                 <ProgressBar
-                    android:id="@+id/trailer_progress_bar"
-                    android:layout_width="wrap_content"
-                    android:layout_height="match_parent" />
+                    android:id="@+id/trailers_progress_bar"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_below="@+id/videos_head"
+                    android:visibility="visible"/>
+
+                <TextView
+                    android:id="@+id/reviews_head"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_below="@+id/trailers_list"
+                    android:layout_gravity="start"
+                    android:text="@string/reviews_head"
+                    android:textSize="@dimen/defaultText"
+                    android:textStyle="bold"
+                    android:textColor="@color/defaultFontColor"
+                    android:layout_margin="@dimen/headMargin"/>
+
+                <ListView
+                    xmlns:android="http://schemas.android.com/apk/res/android"
+                    android:id="@+id/reviews_list"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_below="@+id/reviews_head"
+                    android:divider="@color/darkerLine"
+                    android:dividerHeight="@dimen/divider" />
+
+                <ProgressBar
+                    android:id="@+id/reviews_progress_bar"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_below="@+id/reviews_head"
+                    android:visibility="visible" />
 
             </RelativeLayout>
 

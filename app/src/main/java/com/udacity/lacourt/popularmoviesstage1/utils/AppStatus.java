@@ -21,7 +21,7 @@ public class AppStatus {
      * connection stats
      */
  
-    private static AppStatus instance = new AppStatus();
+    private static final AppStatus instance = new AppStatus();
     ConnectivityManager connectivityManager;
     NetworkInfo wifiInfo, mobileInfo;
     boolean connected = false;

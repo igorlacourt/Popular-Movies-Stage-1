@@ -1,0 +1,18 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <dimen name="title">10dp</dimen>
+    <dimen name="voteAvarage">22sp</dimen>
+    <dimen name="releaseDate">34sp</dimen>
+    <dimen name="textPadding">10dp</dimen>
+    <dimen name="defaultText">16sp</dimen>
+    <dimen name="headMargin">15dp</dimen>
+    <dimen name="divider">2px</dimen>
+    <dimen name="contentMargin">10dp</dimen>
+    <dimen name="voteAvarageHead">18sp</dimen>
+    <dimen name="listItemPaddingLeft">20dp</dimen>
+    <dimen name="releaseDateMarginLeft">18dp</dimen>
+    <dimen name="topInfoPadding">15dp</dimen>
+    <dimen name="readMoreText">15sp</dimen>
+    <dimen name="errorMessages">20sp</dimen>
+    <dimen name="errorMessageMargin">14dp</dimen>
+</resources>

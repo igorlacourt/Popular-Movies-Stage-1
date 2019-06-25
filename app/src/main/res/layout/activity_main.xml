@@ -11,7 +11,7 @@
             android:id="@+id/recycler_view"
             android:layout_width="match_parent"
             android:layout_height="match_parent"
-            android:background="#000"
+            android:background="@color/background"
             />
 
         <ProgressBar
@@ -21,7 +21,7 @@
             android:layout_centerHorizontal="true"
             android:layout_centerVertical="true"
             android:visibility="visible"
-            android:background="#000"/>
+            android:background="@color/background"/>
 
         <ProgressBar
             android:id="@+id/new_items_progress_bar"
@@ -29,7 +29,7 @@
             android:layout_height="wrap_content"
             android:layout_alignParentBottom="true"
             android:visibility="invisible"
-            android:background="#000"/>
+            android:background="@color/background"/>
 
         <RelativeLayout
             android:id="@+id/error_layout"
@@ -39,9 +39,9 @@
                 android:id="@+id/error_message"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:textSize="20sp"
-                android:textColor="@color/fontColor"
-                android:layout_margin="14dp"
+                android:textSize="@dimen/errorMessages"
+                android:textColor="@color/defaultFontColor"
+                android:layout_margin="@dimen/errorMessageMargin"
                 android:gravity="center"
                 android:layout_centerHorizontal="true"
                 android:layout_above="@+id/btn_retry"
@@ -55,6 +55,15 @@
                 android:visibility="visible"
                 android:onClick="onRetry" />
         </RelativeLayout>
+        <TextView
+            android:id="@+id/no_favorites_message"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_centerInParent="true"
+            android:text="@string/no_favorites"
+            android:textSize="@dimen/errorMessages"
+            android:textColor="@color/defaultFontColor"
+            android:visibility="invisible"/>
     </RelativeLayout>
 </layout>
 

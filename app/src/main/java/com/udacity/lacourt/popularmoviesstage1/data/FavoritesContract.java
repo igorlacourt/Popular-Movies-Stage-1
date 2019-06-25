@@ -1,14 +1,22 @@
 package com.udacity.lacourt.popularmoviesstage1.data;
 
+import android.net.Uri;
 import android.provider.BaseColumns;
-
-/**
- * Created by igor on 20/12/2017.
- */
 
 public class FavoritesContract {
 
+    // The authority, which is how your code knows which Content Provider to access
+    public static final String AUTHORITY = "com.udacity.lacourt.popularmoviesstage1";
+
+    // The base content URI = "content://" + <authority>
+    private static final Uri BASE_CONTENT_URI = Uri.parse("content://" + AUTHORITY);
+
+    public static final String PATH_FAVORITES = "favorites";
+
     public static final class FavoritesEntry implements BaseColumns {
+
+        public static final Uri CONTENT_URI =
+                BASE_CONTENT_URI.buildUpon().appendPath(PATH_FAVORITES).build();
 
         public static final String TABLE_NAME = "favorites";
 

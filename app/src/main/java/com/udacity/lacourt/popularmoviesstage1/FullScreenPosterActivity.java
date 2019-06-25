@@ -23,9 +23,9 @@ public class FullScreenPosterActivity extends AppCompatActivity {
 
     private void loadFullScreenPoster() {
 
-        ImageView fullScreenPoster = (ImageView) findViewById(R.id.full_screen_poster);
+        ImageView fullScreenPoster = findViewById(R.id.full_screen_poster);
 
-        final ProgressBar posterLoading = (ProgressBar) findViewById(R.id.full_poster_progress_bar);
+        final ProgressBar posterLoading = findViewById(R.id.full_poster_progress_bar);
         posterLoading.setVisibility(View.VISIBLE);
 
         String sPosterPath = getIntent().getStringExtra("poster_path");

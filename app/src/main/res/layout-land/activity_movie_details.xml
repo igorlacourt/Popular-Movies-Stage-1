@@ -1,107 +1,175 @@
 <?xml version="1.0" encoding="utf-8"?>
 
-<layout>
-    <RelativeLayout
-        xmlns:android="http://schemas.android.com/apk/res/android" android:layout_width="match_parent"
+<layout xmlns:android="http://schemas.android.com/apk/res/android">
+    <LinearLayout
+        android:layout_width="match_parent"
         android:layout_height="match_parent"
         android:orientation="horizontal">
 
-        <RelativeLayout
-            android:id="@+id/left_layout"
+        <ImageView
+            android:id="@+id/detail_poster"
             android:layout_width="wrap_content"
             android:layout_height="match_parent"
-            android:background="#000">
-
-            <ImageView
-                android:id="@+id/detail_poster"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:background="#000"
-                android:layout_alignParentTop="true"
-                android:layout_centerHorizontal="true"
-                android:onClick="onShowFullScreenPoster"
-                />
-            <ProgressBar
-                android:id="@+id/poster_loading"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_centerInParent="true"/>
-        </RelativeLayout>
+            android:adjustViewBounds="true"
+            android:layout_gravity="start"
+            android:background="@color/background"
+            android:onClick="onShowFullScreenPoster" />
 
         <ScrollView
+            xmlns:android="http://schemas.android.com/apk/res/android"
+            android:id="@+id/details_scroll_view"
             android:layout_width="wrap_content"
-            android:layout_height="match_parent"
-            android:layout_alignParentTop="true"
-            android:layout_toEndOf="@+id/left_layout"
-            android:layout_toRightOf="@+id/left_layout"
-            android:background="#000">
+            android:layout_height="wrap_content"
+            android:background="@color/background">
 
             <RelativeLayout
-                android:layout_width="wrap_content"
-                android:layout_height="match_parent"
-                android:layout_alignParentBottom="true"
-                android:layout_alignParentTop="true"
-                android:layout_toEndOf="@+id/left_layout"
-                android:layout_toRightOf="@+id/left_layout"
-                android:background="#000">
-
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content">
                 <TextView
-                    android:id="@+id/original_title"
+                    android:id="@+id/release_date"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:layout_alignParentLeft="true"
-                    android:layout_margin="10dp"
-                    android:background="#000"
-                    android:text="Thor: The Title Of This Movie"
-                    android:textColor="@color/fontColor"
-                    android:textSize="20sp"
-                    android:textStyle="bold" />
+                    android:layout_gravity="center"
+                    android:gravity="center"
+                    android:background="@color/background"
+                    android:textColor="@color/darkerText"
+                    android:textSize="@dimen/releaseDate"
+                    android:textStyle="italic"
+                    android:layout_marginStart="@dimen/releaseDateMarginLeft"
+                    android:layout_marginLeft="@dimen/releaseDateMarginLeft"/>
+
+
 
                 <LinearLayout
-                    android:id="@+id/release_date_layout"
+                    android:id="@+id/vote_and_favorite_layout"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    android:layout_alignParentLeft="true"
-                    android:layout_alignParentStart="true"
-                    android:layout_below="@+id/original_title"
-                    android:layout_marginLeft="10dp"
-                    android:background="#000"
-                    android:orientation="vertical">
+                    android:layout_below="@+id/release_date"
+                    android:orientation="horizontal"
+                    android:weightSum="100" >
+
+                    <TextView
+                        android:id="@+id/vote_average_head"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_gravity="center"
+                        android:layout_weight="20"
+                        android:gravity="center"
+                        android:textStyle="bold"
+                        android:textSize="@dimen/voteAvarageHead"/>
 
                     <TextView
                         android:id="@+id/vote_average"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
-                        android:background="#000"
-                        android:text="34 votes"
-                        android:textSize="@dimen/releaseDateFontSize"
+                        android:layout_weight="20"
+                        android:layout_gravity="center_vertical"
+                        android:gravity="start"
+                        android:background="@color/background"
                         android:textColor="@color/releaseDateColor"
-                        android:textStyle="bold" />
+                        android:textSize="@dimen/voteAvarage"
+                        android:textStyle="bold"/>
 
                     <TextView
-                        android:id="@+id/release_date"
+                        android:id="@+id/favorite_head"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
-                        android:background="#000"
-                        android:text="11-02-2017"
-                        android:textSize="@dimen/releaseDateFontSize"
-                        android:textColor="@color/releaseDateColor" />
+                        android:layout_weight="20"
+                        android:layout_gravity="center_vertical"
+                        android:gravity="end"
+                        android:text="@string/favorite_head"
+                        android:textColor="@color/favorite"
+                        android:textStyle="italic"
+                        android:textSize="@dimen/voteAvarageHead"/>
+
+                    <ImageView
+                        android:id="@+id/add_favorite_button"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_weight="20"
+                        android:layout_gravity="start"
+                        android:gravity="start"
+                        android:onClick="onAddToFavoritesSelected"/>
                 </LinearLayout>
 
                 <TextView
                     android:id="@+id/overview"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    android:layout_alignParentBottom="true"
-                    android:layout_below="@+id/release_date_layout"
-                    android:layout_marginBottom="10dp"
-                    android:layout_marginLeft="10dp"
-                    android:layout_marginRight="10dp"
-                    android:background="#000"
-                    android:text="aoufofhodijf OIWHFO ajsfslkdgkjs JANFSLGKNS AOSKDJGLSDKJ aljkngofdkj scjvnksdjv aof´pweoif pwqeokfwok oejrogeijg owierjgfwbva anbrv"
-                    android:textColor="@color/fontColor"
-                    android:textSize="16sp" />
+                    android:layout_gravity="center"
+                    android:layout_below="@+id/vote_and_favorite_layout"
+                    android:background="@color/background"
+                    android:textColor="@color/defaultFontColor"
+                    android:textSize="@dimen/defaultText"
+                    android:layout_margin="@dimen/contentMargin" />
+                <TextView
+                    android:id="@+id/videos_head"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_below="@+id/overview"
+                    android:layout_gravity="start"
+                    android:text="@string/videos_head"
+                    android:textSize="@dimen/defaultText"
+                    android:textStyle="bold"
+                    android:textColor="@color/defaultFontColor"
+                    android:layout_margin="@dimen/headMargin"/>
+
+                <ListView
+                    xmlns:android="http://schemas.android.com/apk/res/android"
+                    android:id="@+id/trailers_list"
+                    android:layout_width="match_parent"
+                    android:layout_height="match_parent"
+                    android:layout_below="@+id/videos_head"
+                    android:divider="@color/darkerLine"
+                    android:dividerHeight="@dimen/divider"/>
+
+                <ProgressBar
+                    android:id="@+id/trailers_progress_bar"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_below="@+id/videos_head"
+                    android:visibility="visible"/>
+
+                <TextView
+                    android:id="@+id/reviews_head"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_below="@+id/trailers_list"
+                    android:layout_gravity="start"
+                    android:text="@string/reviews_head"
+                    android:textSize="@dimen/defaultText"
+                    android:textStyle="bold"
+                    android:textColor="@color/defaultFontColor"
+                    android:layout_margin="@dimen/headMargin"/>
+
+                <ProgressBar
+                    android:id="@+id/poster_loading"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_alignParentTop="true"
+                    android:layout_centerHorizontal="true"
+                    android:layout_marginTop="50dp" />
+
+                <ListView
+                    xmlns:android="http://schemas.android.com/apk/res/android"
+                    android:id="@+id/reviews_list"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_below="@+id/reviews_head"
+                    android:divider="@color/darkerLine"
+                    android:dividerHeight="@dimen/divider" />
+
+                <ProgressBar
+                    android:id="@+id/reviews_progress_bar"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_below="@+id/reviews_head"
+                    android:visibility="visible" />
+
             </RelativeLayout>
+
+
         </ScrollView>
-    </RelativeLayout>
+    </LinearLayout>
+
 </layout>

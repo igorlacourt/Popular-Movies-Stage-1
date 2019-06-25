@@ -1,12 +1,6 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
-    <color name="colorPrimary">#3F51B5</color>
-    <color name="colorPrimaryDark">#303F9F</color>
-    <color name="colorAccent">#FF4081</color>
 
-    <!--Text-->
-    <color name="fontColor">#fdfdfd</color>
-    <color name="releaseDateColor">#B5B5B5</color>
     <!--Vote avarage colors-->
     <color name="avg8_10">#4cff55</color>
     <color name="avg7">#a1ff59</color>
@@ -14,5 +8,15 @@
     <color name="avg2_3">#ffe11e</color>
     <color name="avg0_1">#ff9500</color>
 
+    <!--Text-->
+    <color name="defaultFontColor">#fdfdfd</color>
+    <color name="releaseDateColor">#B5B5B5</color>
+
+    <color name="darkerText">#AAA</color>
+    <color name="darkerLine">#888</color>
+
+    <color name="background">#000</color>
+    <color name="favorite">#ffff00</color>
+    <color name="readMore">#00bbcc</color>
 
 </resources>

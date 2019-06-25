@@ -2,6 +2,7 @@ package com.udacity.lacourt.popularmoviesstage1.utils;
 
 import com.udacity.lacourt.popularmoviesstage1.MoviesApiService;
 import com.udacity.lacourt.popularmoviesstage1.model.PostResponse;
+import com.udacity.lacourt.popularmoviesstage1.model.ReviewsGetResponse;
 import com.udacity.lacourt.popularmoviesstage1.model.TrailersPostResponse;
 
 import java.util.concurrent.TimeUnit;
@@ -11,20 +12,15 @@ import retrofit2.Call;
 import retrofit2.Retrofit;
 import retrofit2.converter.gson.GsonConverterFactory;
 
-/**
- * Created by igor on 15/12/2017.
- */
-
-
-
 public class RetrofitClass {
 
-    public static final String BASE_URL = "https://api.themoviedb.org/3/";
-    public static Retrofit retrofit;
+    private static final String BASE_URL = "https://api.themoviedb.org/3/";
+    private static Retrofit retrofit;
 
-    public static MoviesApiService client;
+    private static MoviesApiService client;
     public static Call<PostResponse> call;
     public static Call<TrailersPostResponse> trailerCall;
+    public static Call<ReviewsGetResponse> reviewCall;
 
     public static void setRetrofit() {
         final OkHttpClient okHttpClient = new OkHttpClient.Builder()
@@ -54,5 +50,9 @@ public class RetrofitClass {
 
     public static void requestTrailer(String movie_id) {
         trailerCall = client.getTrailer(movie_id);
+    }
+
+    public static void requestReview(String movie_id) {
+        reviewCall = client.getReview(movie_id);
     }
 }

@@ -1,17 +1,27 @@
 <resources>
-    <string name="app_name">Poupular Movies Stage 1</string>
+    <string name="app_name">Poupular Movies Stage 2</string>
     <string name="sort_pop">Order by most popular</string>
     <string name="sort_rated">Order by top rated</string>
     <string name="favorites">Favorites List</string>
-    <string name="select_sort_menu_bar_label">Select the sort order</string>
     <string name="no_internet">No internet connection!</string>
     <string name="poor_connection">Poor internet connection. Please, try again.</string>
-
+    <string name="no_connection">Check your internet connection and try again.</string>
+    <string name="reviews_head">Reviews</string>
+    <string name="videos_head">Videos</string>
+    <string name="review_by">Review by</string>
+    <string name="no_favorites">Favorites list is empty.</string>
 
     //Preferences
     <string name="is_most_popular">ismostpopular</string>
     <string name="is_top_rated">istoprated</string>
     <string name="retry_button">Retry</string>
     <string name="poor_connection_toast">Poor internet connection!</string>
-    <bool name="in_most_popular_default">true</bool>
+
+    <string name="missing_vote_avarage">Missing vote avarage.</string>
+    <string name="vote_avarage_head">Vote Avarage</string>
+    <string name="favorite_head">Favorite</string>
+
+    <string name="toast_favorite_added">Added to favorites list.</string>
+    <string name="toast_favorite_removed">Removed from favorites list.</string>
+    <string name="read_more">READ MORE...</string>
 </resources>

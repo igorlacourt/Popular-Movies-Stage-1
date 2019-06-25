@@ -2,8 +2,10 @@ package com.udacity.lacourt.popularmoviesstage1;
 
 import android.content.Intent;
 import android.content.res.Configuration;
+import android.database.Cursor;
 import android.databinding.DataBindingUtil;
 import android.os.Bundle;
+import android.os.Parcelable;
 import android.support.annotation.NonNull;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.GridLayoutManager;
@@ -15,8 +17,8 @@ import android.view.MenuItem;
 import android.view.View;
 import android.widget.Toast;
 
+import com.udacity.lacourt.popularmoviesstage1.adapters.MovieAdapter;
 import com.udacity.lacourt.popularmoviesstage1.data.FavoritesContract;
-import com.udacity.lacourt.popularmoviesstage1.data.FavoritesDbHelper;
 import com.udacity.lacourt.popularmoviesstage1.data.Preferences;
 import com.udacity.lacourt.popularmoviesstage1.databinding.ActivityMainBinding;
 import com.udacity.lacourt.popularmoviesstage1.model.PostResponse;
@@ -28,15 +30,14 @@ import com.udacity.lacourt.popularmoviesstage1.utils.RetrofitClass;
 import java.math.BigDecimal;
 import java.math.RoundingMode;
 import java.net.SocketTimeoutException;
-import java.util.concurrent.TimeUnit;
+import java.util.ArrayList;
+import java.util.List;
 
-import okhttp3.OkHttpClient;
 import retrofit2.Call;
 import retrofit2.Callback;
 import retrofit2.Response;
-import retrofit2.Retrofit;
-import retrofit2.converter.gson.GsonConverterFactory;
 
+import com.udacity.lacourt.popularmoviesstage1.data.FavoritesContract.*;
 
 public class MainActivity extends AppCompatActivity implements MovieAdapter.MovieOnClickHandler {
 
@@ -52,13 +53,15 @@ public class MainActivity extends AppCompatActivity implements MovieAdapter.Movi
 
     private ActivityMainBinding bind;
 
+    private final String LIST_STATE_KEY = "listState";
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         bind = DataBindingUtil.setContentView(this, R.layout.activity_main);
 
         //Database
-        FavoritesDbHelper.onInicializeDB(this);
+//        FavoritesDbHelper.onInicializeDB(this);
 
         mToast = new Toast(this);
         mPreferences = new Preferences(this);
@@ -76,30 +79,63 @@ public class MainActivity extends AppCompatActivity implements MovieAdapter.Movi
 
         bind.recyclerView.setAdapter(mAdapter);
 
-        loadDataOnScreen();
+        loadDataOnScreen(savedInstanceState);
 
+    }
+
+    @Override
+    protected void onPause() {
+        super.onPause();
+
+    }
+
+    @Override
+    protected void onRestart() {
+        super.onRestart();
+//        bind.progressBar.setVisibility(View.VISIBLE);
     }
 
     @Override
     protected void onStart() {
         super.onStart();
-        //TODO make reclyview return from where it stoped after coming back from MovieDetailsActivity
-        page = 1;
 
-        mAdapter = new MovieAdapter(this, this);
-        bind.recyclerView.setAdapter(mAdapter);
-
-        loadDataOnScreen();
     }
 
+    Parcelable listState;
 
-    private void loadDataOnScreen() {
+    @Override
+    protected void onSaveInstanceState(Bundle outState) {
+        super.onSaveInstanceState(outState);
+
+        listState = bind.recyclerView.getLayoutManager().onSaveInstanceState();
+        outState.putParcelable(LIST_STATE_KEY, listState);
+    }
+
+    @Override
+    protected void onRestoreInstanceState(Bundle savedInstanceState) {
+        super.onRestoreInstanceState(savedInstanceState);
+
+        if(savedInstanceState != null){
+            listState = savedInstanceState.getParcelable(LIST_STATE_KEY);
+        }
+
+    }
+
+    @Override
+    protected void onResume() {
+        super.onResume();
+
+
+    }
+
+    private void loadDataOnScreen(Bundle savedInstanceState) {
 
         if(AppStatus.getInstance(this).isOnline()) {
 
             RetrofitClass.setRetrofit();
 
             bind.recyclerView.addOnScrollListener(createInfiniteScrollListener());
+
             fetchDataFromAPI(page);
 
         } else {
@@ -126,9 +162,7 @@ public class MainActivity extends AppCompatActivity implements MovieAdapter.Movi
         double screenHeight = displayMetrics.heightPixels;
 
         double imageHeight = (2 * imageWidth);
-
         double percentage = screenHeight / imageHeight;
-
         double width = percentage * imageWidth;
 
         double nColumns = screenWidth / (int)width;
@@ -164,12 +198,16 @@ public class MainActivity extends AppCompatActivity implements MovieAdapter.Movi
 
     }
 
-    public void fetchDataFromAPI(int page) {
+    private void fetchDataFromAPI(int page) {
+
+        bind.noFavoritesMessage.setVisibility(View.INVISIBLE);
 
         if(mPreferences.isMostPopular()){
 
             RetrofitClass.requestMostPopular(page);
             getResultFromAPI();
+
+
 
         } else if(mPreferences.isTopRated()) {
 
@@ -178,14 +216,74 @@ public class MainActivity extends AppCompatActivity implements MovieAdapter.Movi
 
         } else {
 
-            mAdapter.setData(FavoritesDbHelper.populateFavoritesList());
+//            mAdapter.setData(FavoritesDbHelper.populateFavoritesList());
+            ArrayList<Result> favorites = new ArrayList<>();
+
+            favorites.addAll(favoritesArrayList());
+
+            if(favorites.isEmpty()) {
+                bind.noFavoritesMessage.setVisibility(View.VISIBLE);
+            }
+
+            mAdapter.setData(favoritesArrayList());
             bind.progressBar.setVisibility(View.INVISIBLE);
             bind.newItemsProgressBar.setVisibility(View.INVISIBLE);
 
         }
     }
 
-    public void getResultFromAPI() {
+    private List<Result> favoritesArrayList() {
+
+        Cursor c = getContentResolver().query(FavoritesEntry.CONTENT_URI, null,
+                                                null, null, null);
+
+        List<Result> favoritesList = new ArrayList<>();
+
+        if (c != null && c.getCount() > 0) {
+            c.moveToFirst();
+            for (int count = 0; count < c.getCount(); count++) {
+                Result movie = new Result();
+
+                int movieId = c.getInt(c.getColumnIndex(FavoritesContract.FavoritesEntry.COLUMN_MOVIE_ID));
+                String title = c.getString(c.getColumnIndex(FavoritesContract.FavoritesEntry.COLUMN_TITLE));
+                String overview = c.getString(c.getColumnIndex(FavoritesContract.FavoritesEntry.COLUMN_OVERVIEW));
+                String posterPath = c.getString(c.getColumnIndex(FavoritesContract.FavoritesEntry.COLUMN_POSTER_PATH));
+                String releaseDate = c.getString(c.getColumnIndex(FavoritesContract.FavoritesEntry.COLUMN_RELEASE_DATE));
+                double voteAverage = c.getDouble(c.getColumnIndex(FavoritesContract.FavoritesEntry.COLUMN_VOTE_AVARAGE));
+                int voteCount = c.getInt(c.getColumnIndex(FavoritesContract.FavoritesEntry.COLUMN_VOTE_COUNT));
+                double popularity = c.getDouble(c.getColumnIndex(FavoritesContract.FavoritesEntry.COLUMN_POPULARITY));
+                String originalLanguage = c.getString(c.getColumnIndex(FavoritesContract.FavoritesEntry.COLUMN_ORIGINAL_LANGUAGE));
+                String originalTitle = c.getString(c.getColumnIndex(FavoritesContract.FavoritesEntry.COLUMN_ORIGINAL_TITLE));
+                String backdropPath = c.getString(c.getColumnIndex(FavoritesContract.FavoritesEntry.COLUMN_BACKDROP_PATH));
+
+                movie.setId(movieId);
+                movie.setTitle(title);
+                movie.setOverview(overview);
+                movie.setPosterPath(posterPath);
+                movie.setReleaseDate(releaseDate);
+                movie.setVoteAverage(voteAverage);
+                movie.setVoteCount(voteCount);
+                movie.setPopularity(popularity);
+                movie.setOriginalLanguage(originalLanguage);
+                movie.setOriginalTitle(originalTitle);
+                movie.setBackdropPath(backdropPath);
+
+                favoritesList.add(movie);
+                c.moveToNext();
+
+            }
+        }
+
+        for(Result favorite : favoritesList) {
+            Log.d("FAVORITES_TAG", "" + favorite.getTitle() + "\n\n\n\n");
+        }
+
+        c.close();
+        return favoritesList;
+
+    }
+
+    private void getResultFromAPI() {
         //Display data
         RetrofitClass.call.enqueue(new Callback<PostResponse>() {
 
@@ -197,6 +295,11 @@ public class MainActivity extends AppCompatActivity implements MovieAdapter.Movi
                     mAdapter.setData(response.body().getResults());
                     bind.progressBar.setVisibility(View.INVISIBLE);
                     bind.newItemsProgressBar.setVisibility(View.INVISIBLE);
+
+                    if(listState != null){
+                        bind.recyclerView.getLayoutManager().onRestoreInstanceState(listState);
+                    }
+
 
                 } else {
                     Log.d("TAAG", "response code: " + response.code());
@@ -240,7 +343,7 @@ public class MainActivity extends AppCompatActivity implements MovieAdapter.Movi
     }
 
     private void showNoConnectionMessage() {
-        bind.errorMessage.setText("Check your internet connection and try again.");
+        bind.errorMessage.setText(getResources().getText(R.string.no_connection));
         bind.errorLayout.setVisibility(View.VISIBLE);
     }
 

@@ -1,4 +1,4 @@
-package com.udacity.lacourt.popularmoviesstage1;
+package com.udacity.lacourt.popularmoviesstage1.adapters;
 
 import android.app.Activity;
 import android.content.Context;
@@ -11,25 +11,22 @@ import android.widget.RelativeLayout;
 
 import com.squareup.picasso.Callback;
 import com.squareup.picasso.Picasso;
+import com.udacity.lacourt.popularmoviesstage1.R;
 import com.udacity.lacourt.popularmoviesstage1.model.Result;
 
 import java.util.List;
 
-/**
- * Created by igor on 03/11/2017.
- */
-
 public class MovieAdapter extends RecyclerView.Adapter<MovieAdapter.MovieViewHolder> {
 
-    Context mContext;
+    private final Context mContext;
 
-    List<Result> movies;
+    public List<Result> movies;
 
-    MovieOnClickHandler movieOnClickHandler;
+    private final MovieOnClickHandler movieOnClickHandler;
 
-    LayoutInflater inflater;
+    private LayoutInflater inflater;
 
-    Activity activity;
+    private final Activity activity;
 
     public MovieAdapter(MovieOnClickHandler movieOnClickHandler, Context context) {
 
@@ -98,13 +95,13 @@ public class MovieAdapter extends RecyclerView.Adapter<MovieAdapter.MovieViewHol
 
     class MovieViewHolder extends RecyclerView.ViewHolder{
 
-        RelativeLayout mMovieLayout;
-        ImageView mImageView;
+        final RelativeLayout mMovieLayout;
+        final ImageView mImageView;
 
         public MovieViewHolder(View itemView) {
             super(itemView);
-            mImageView = (ImageView) itemView.findViewById(R.id.poster);
-            mMovieLayout = (RelativeLayout) itemView.findViewById(R.id.movie_layout);
+            mImageView = itemView.findViewById(R.id.poster);
+            mMovieLayout = itemView.findViewById(R.id.movie_layout);
             mMovieLayout.setVisibility(View.INVISIBLE);
         }
     }
